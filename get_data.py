@@ -145,8 +145,7 @@ class Msw:
                            f'you by python script '
                     sender_email = "aradon1@gmail.com"
                     receiver_email = email
-                    password = "Python2020"
-                    # password = input("gmail password: ")
+                    password = input("gmail password: ")
 
                     message = MIMEMultipart()
                     message["From"] = 'Arad Gast'
@@ -178,104 +177,4 @@ class Msw:
 if __name__ == '__main__':
     print('***************************')
     # a = Msw()
-    # a.swell_height_and_period()
-    # print(ani_marina)
-    # a = ani_marina.iloc[0].get('swell')
-    # urlretrieve(a, "pic.png")
-    # print(b.get('swell').get('components').get('combined').get('height'))
-    # marina = marina.text
-    # marina = pd.read_(url_marina.text)
-    # marina = pd.DataFrame(marina)
-    # a = pd.DataFrame(marina['swell'])
-    # b = a.iloc[0]['swell']['components']['combined']['height']
-    # c = b.get('absMinBreakingHeight')
-    # b = a.iloc[1].get('absMinBreakingHeight')
-    # marina = Msw()
-    # a = marina.swell_height_and_period()
-    # b = marina.df_marina.shape
-    # print(b)
-    # print(marina.high_days)
-    # a = Msw()
-    # url = (pd.DataFrame(a.df_marina['charts']).iloc[0][0])
-    # url = url.get('swell')
-    # response = requests.get(url)
-    # img = Image.open(BytesIO(response.content)).convert("L")
-    # plt.imshow(img, cmap="gray")
-    # plt.show()
-    # mat = np.array(img)
-    # print(mat.shape)
-    # a = Msw()
-    # a.update()
-    # print(a.good_days)
-    # print(a.good_days)
-    # b = a.swell_height_and_period()
-    # t = np.array(a.df_marina)[b]
-    # print(t[:, 0])
-    # print(datetime.today().date())
 
-    # a = Msw(repeat_bool=True)
-    # a.update()
-    # print(a.good_days["localTimestamp"])
-    # print(a.good_days["swell"])
-    # print('@@@@@@@@@@@@@@@@@@@')
-    # print(a.good_days)
-    # print(a.good_days)
-
-    # def interval():
-    #     b = Msw()
-    #     b.update()
-    #     time.sleep(1800)
-    #
-    #
-    # while True:
-    #     interval()
-
-    # sender_email = "aradon1@gmail.com"
-    # receiver_email = "aradgast1@gmail.com"
-    # message = f"""\
-    # Waves are here!!!
-    #
-    # {a.good_days}
-    # This message is sent from Python."""
-    # port = 465
-    # password = input('gmail password: ')
-    # context = ssl.create_default_context()
-    # with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-    #     server.login(sender_email, password)
-    #     server.sendmail(sender_email, receiver_email, message)
-
-    from email import encoders
-    from email.mime.base import MIMEBase
-
-
-    # subject = "Waves are here!!!"
-    # body = f'you should check it out: \n {a.good_days}'
-    # sender_email = "aradon1@gmail.com"
-    # receiver_email = "aradgast1@gmail.com"
-    # password = input("Type your password and press enter:")
-    #
-    # # Create a multipart message and set headers
-    # message = MIMEMultipart()
-    # message["From"] = sender_email
-    # message["To"] = receiver_email
-    # message["Subject"] = subject
-    # message["Body"] = body  # Recommended for mass emails
-    # message.attach(MIMEText(body, "plain"))
-    #
-    # text = message.as_string()
-    # port = 465
-    # context = ssl.create_default_context()
-    # with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-    #     server.login(sender_email, password)
-    #     server.sendmail(sender_email, receiver_email, text)
-
-    # with open("useres.csv") as file:
-    #     reader = csv.reader(file)
-    #     next(reader)  # Skip header row
-    #     for name, email in reader:
-    #         print(f"Sending email to {name}")
-    # #         # Send email here
-
-    # f = open('useres.csv', 'a')
-    # w = csv.writer(f)
-    # w.writerow(['arad', 'gast'])
