@@ -17,6 +17,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import csv
 
+from users import USERS
+
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
@@ -140,31 +142,28 @@ class Msw:
     def email(self):
         '''will send mail to the users in the csv file if relevent'''
         if not self.good_days.empty:
-            with open("useres.csv") as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip header row
-                for name, email in reader:
-                    subject = "Waves are here!!!"
-                    body = f'Hi {name}, \n you should check it out: \n\n {self.good_days} \n\n\n this messege sent to ' \
-                           f'you by python script '
-                    sender_email = "aradon1@gmail.com"
-                    receiver_email = email
-                    password = "Python2020"
-                    # password = input("gmail password: ")
+            for name, email in USERS.items():
+                subject = "Waves are here!!!"
+                body = f'Hi {name}, \n you should check it out: \n\n {self.good_days} \n\n\n this messege sent to ' \
+                       f'you by python script '
+                sender_email = "aradon1@gmail.com"
+                receiver_email = email
+                password = "Python2020"
+                # password = input("gmail password: ")
 
-                    message = MIMEMultipart()
-                    message["From"] = 'Arad Gast'
-                    message["To"] = receiver_email
-                    message["Subject"] = subject
-                    message["Body"] = body
-                    message.attach(MIMEText(body, "plain"))
-                    text = message.as_string()
+                message = MIMEMultipart()
+                message["From"] = 'Arad Gast'
+                message["To"] = receiver_email
+                message["Subject"] = subject
+                message["Body"] = body
+                message.attach(MIMEText(body, "plain"))
+                text = message.as_string()
 
-                    port = 465
-                    context = ssl.create_default_context()
-                    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-                        server.login(sender_email, password)
-                        server.sendmail(sender_email, receiver_email, text)
+                port = 465
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+                    server.login(sender_email, password)
+                    server.sendmail(sender_email, receiver_email, text)
 
     def add_new_email(self, name, email):
         '''add new user to the csv'''
