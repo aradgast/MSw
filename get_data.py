@@ -182,4 +182,5 @@ class Msw:
 
 if __name__ == '__main__':
     print('***************************')
-    # a = Msw()
+    a = Msw()
+    a.update()
