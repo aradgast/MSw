@@ -1,4 +1,4 @@
-import numpy as np
+# import numpy as np
 # import json
 # import pandas_datareader as web
 import requests
