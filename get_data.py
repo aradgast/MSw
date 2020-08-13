@@ -126,7 +126,7 @@ class Msw:
         for i in range(len(good_days)):
             good_days['localTimestamp'].iloc[i] = datetime.fromtimestamp(good_days['localTimestamp'].iloc[i])
             # good_days['charts'].iloc[i] = good_days['charts'].iloc[i]['swell']
-            good_days['condition'].iloc[i] = f"temp : {good_days['condition'].iloc[i]['temperature']} C "
+            good_days['condition'].iloc[i] = f"temp : {good_days['condition'].iloc[i]['temperature']}"
             good_days['swell'].iloc[
                 i] = f"height : {round(good_days['swell'].iloc[i]['components']['combined']['height'],2)} m , period : {good_days['swell'].iloc[i]['components']['combined']['period']} sec "
         # good_days = good_days.loc[:, ['localTimestamp', 'swell', 'condition', 'charts']]
