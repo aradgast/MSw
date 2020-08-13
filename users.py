@@ -1,4 +1,5 @@
 USERS = {
     'Arad Gast': 'aradgast1@gmail.com',
-    # 'Koren Gast': 'korengast@gmail.com',
+    'Omer': 'Omerts11@gmail.com',
+    'Ofek': 'Ofekmaman333@gmail.com', 
 }
