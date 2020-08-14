@@ -146,7 +146,7 @@ class Msw:
                 subject = "Waves are here!!!"
                 body = f'Hi {name}, \n you should check it out: \n\n {self.good_days} \n\n\n this messege sent to ' \
                        f'you by python script '
-                sender_email = "aradon1@gmail.com"
+                sender_email = input("gmail username: ")
                 receiver_email = email
                 password = input("gmail password: ")
 
