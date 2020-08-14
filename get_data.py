@@ -148,8 +148,7 @@ class Msw:
                        f'you by python script '
                 sender_email = "aradon1@gmail.com"
                 receiver_email = email
-                password = "Python2020"
-                # password = input("gmail password: ")
+                password = input("gmail password: ")
 
                 message = MIMEMultipart()
                 message["From"] = 'Arad Gast'
