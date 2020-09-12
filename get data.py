@@ -1,5 +1,5 @@
 # import numpy as np
-# import json
+import json
 # import pandas_datareader as web
 import requests
 import pandas as pd
@@ -17,6 +17,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import csv
 import pytz
+import Google_docs
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -30,15 +31,6 @@ class Msw:
     def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.5,
                  swell_period=7, sunrise=6,
                  sunset=18):
-        # try:
-        #     self.marina_rating = self.to_dataframe(requests.api.get(
-        #         'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3979&fields=fadedRating'))
-        #     self.tel_rating = self.to_dataframe(requests.api.get(
-        #         'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3978&fields=fadedRating'))
-        #     if sum(np.array(self.marina_rating)) + sum(np.array(self.tel_rating)) <= 2:
-        #         raise Exception('NoWaves')
-        # except:
-        #     raise Exception('NoWaves')
 
         self.url_marina = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3979'
         self.url_tel_baroch = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3978'
@@ -142,21 +134,20 @@ class Msw:
     # TODO - maybe image proccesing for better forcast
     def email(self):
         '''will send mail to the users in the csv file if relevent'''
+        file_path = 'Google_docs\myfile.json'
         if not self.good_days.empty:
-            with open("useres.csv") as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip header row
-                for name, email in reader:
+            dict = json.load(open(file_path))
+            for name in dict:
                     subject = "Waves are here!!!"
                     body = f'Hi {name}, \n you should check it out: \n\n {self.good_days} \n\n\n this messege sent to ' \
-                           f'you by python script '
+                           f'you by python script, if you want to unsubscribe send mail to aradon1@gmail.com '
                     sender_email = "aradon1@gmail.com"
-                    receiver_email = email
+                    receiver_email = dict[name][0]
                     password = "Python2020"
                     # password = input("gmail password: ")
 
                     message = MIMEMultipart()
-                    message["From"] = 'Arad Gast'
+                    message["From"] = "Wave's Alert"
                     message["To"] = receiver_email
                     message["Subject"] = subject
                     message["Body"] = body
@@ -169,22 +160,13 @@ class Msw:
                         server.login(sender_email, password)
                         server.sendmail(sender_email, receiver_email, text)
 
-    def add_new_email(self, name, email):
-        '''add new user to the csv'''
-        #TODO if name is already on the list
-        file = open('useres.csv', 'a')
-        writer = csv.writer(file)
-        writer.writerow([name, email])
-        file.close()
-
-
-# f = open('useres.csv', 'a')
-# w = csv.writer(f)
-# w.writerow(['arad', 'gast'])
 
 
 
 if __name__ == '__main__':
-    # print('***************************')
-    a = Msw(repeat_bool=True)
-    a.repeat()
+    print('***************************')
+    a = Msw(repeat_bool=False)
+    a.update()
+
+
+

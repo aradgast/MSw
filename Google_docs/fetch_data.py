@@ -3,12 +3,15 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import pandas as pd
+
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 # The ID and range of a sample spreadsheet.
-SPREADSHEET_ID = '1iwlsnR8GI2XBBIQd5AJrIkAC5ALuDMrQZU-YrWZ7wGc'
+SPREADSHEET_ID = '1oBrkeyQDfFubkMm7RNWukrfavr0EbYWGXgu7FOdl16s'
+SAMPLE_RANGE_NAME = 'A1:AA1000'
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -27,7 +30,7 @@ def main():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'client_id.json', SCOPES)
+                'credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
@@ -36,16 +39,18 @@ def main():
 
     # Call the Sheets API
     sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID).execute()
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
     values = result.get('values', [])
 
     if not values:
         print('No data found.')
     else:
-        print('Name, Major:')
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
+        # print('Name, Major:')
+        # for row in values:
+        #     # Print columns A and E, which correspond to indices 0 and 4.
+        #     print('%s, %s' % (row[1], row[2], row[3]))
+        return pd.DataFrame(values[1:], columns=values[0], )
+
 
 if __name__ == '__main__':
     main()
