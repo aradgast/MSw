@@ -8,7 +8,7 @@ class Contacts:
 
     def update(self):
         for row in self.df.iloc:
-            self.dict[row.loc['Name']] = row.loc['Email'], row.loc['Phone number']
+            self.dict[row.loc['Name']] = row.loc['Email']
         self.save()
 
     def save(self):
