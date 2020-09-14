@@ -56,7 +56,7 @@ class Msw:
         self.df_marina = self.to_dataframe(requests.api.get(self.url_marina))
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
-        manage_Users_dict.Contacts(json.load(open('myfile.json')), fetch_data.main()).update()
+        # manage_Users_dict.Contacts(json.load(open('myfile.json')), fetch_data.main()).update()
         self.email()
         self.whatsapp()
 
@@ -149,9 +149,8 @@ class Msw:
                     body = f'Hi {name}, \nyou should check it out: \n {df_email} \n\n\n this messege sent to ' \
                            f'you by python script, if you want to unsubscribe send mail to aradon1@gmail.com '
                     sender_email = "aradon1@gmail.com"
-                    receiver_email = dict[name][0]
-                    password = "Python2020"
-                    # password = input("gmail password: ")
+                    receiver_email = dict[name]
+                    password = input("gmail password: ")
 
                     message = MIMEMultipart()
                     message["From"] = "Wave's Alert"
@@ -169,7 +168,7 @@ class Msw:
 
     def whatsapp(self):
         account_sid = 'ACee9321dd0e95d7cada84ede81820fe7b'
-        auth_token = 'fc6c0385095c5d89acfb700662a2f67a'
+        auth_token = 'd4c6189d427c770101271d99e8f26c9c'
         client = Client(account_sid, auth_token)
         messege_df = self.good_days.loc[:, ['localTimestamp', 'swell']]
         messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
