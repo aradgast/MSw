@@ -64,7 +64,7 @@ class Msw:
         '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
         while self.repeat_bool:
             self.update()
-            time.sleep(15)
+            time.sleep(60*60*12)
 
     def to_dataframe(self, url):
         return pd.DataFrame((pd.read_json(url.text)))
@@ -187,8 +187,9 @@ class Msw:
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
+    #a.repeat()
     a.update()
-    print(a.good_days)
+
 
 
 
