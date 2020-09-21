@@ -17,8 +17,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import csv
 import pytz
-import Google_docs
-from Google_docs import manage_Users_dict, fetch_data
+#import Google_docs
+#from Google_docs import manage_Users_dict, fetch_data
 from twilio.rest import Client
 
 
