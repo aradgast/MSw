@@ -57,14 +57,14 @@ class Msw:
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
         # manage_Users_dict.Contacts(json.load(open('myfile.json')), fetch_data.main()).update()
-        self.email()
+        # self.email()
         self.whatsapp()
 
     def repeat(self):
         '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
         while self.repeat_bool:
             self.update()
-            time.sleep(60 * 60 * 24)
+            time.sleep(60*60*16)
 
     def to_dataframe(self, url):
         return pd.DataFrame((pd.read_json(url.text)))
@@ -186,8 +186,8 @@ class Msw:
 
 if __name__ == '__main__':
     print('***************************')
-    a = Msw(repeat_bool=False)
-    a.update()
+    a = Msw(repeat_bool=True)
+    a.repeat()
 
 
 
