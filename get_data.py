@@ -172,12 +172,12 @@ class Msw:
         messege_df.reset_index(drop=True, inplace=True)
 
         bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
-        bot_chatID = '787115422'
-        send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={bot_chatID}&parse_mode=Markdown&text={messege_df}'
+        bot_chatID = ['787115422', '989958958']
+        for char in bot_chatID:
+            send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={char}&parse_mode=Markdown&text={messege_df}'
+            response = requests.get(send_text)
 
-        response = requests.get(send_text)
-
-        return response.json()
+        # return response.json()
 
 
 if __name__ == '__main__':
