@@ -183,8 +183,8 @@ class Msw:
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
-    a.repeat()
-    # a.update()
+#     a.repeat()
+    a.update()
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # a.telegram_bot_sendtext()
