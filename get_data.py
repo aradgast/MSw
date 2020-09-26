@@ -19,7 +19,6 @@ import csv
 import pytz
 #import Google_docs
 #from Google_docs import manage_Users_dict, fetch_data
-from twilio.rest import Client
 
 
 pd.set_option('display.max_rows', 500)
@@ -56,9 +55,8 @@ class Msw:
         self.df_marina = self.to_dataframe(requests.api.get(self.url_marina))
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
-        # manage_Users_dict.Contacts(json.load(open('myfile.json')), fetch_data.main()).update()
         # self.email()
-        self.whatsapp()
+        self.telegram_bot_sendtext()
 
     def repeat(self):
         '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
@@ -166,22 +164,20 @@ class Msw:
                         server.login(sender_email, password)
                         server.sendmail(sender_email, receiver_email, text)
 
-    def whatsapp(self):
-        account_sid = 'ACee9321dd0e95d7cada84ede81820fe7b'
-        auth_token = 'd4c6189d427c770101271d99e8f26c9c'
-        client = Client(account_sid, auth_token)
+
+    def telegram_bot_sendtext(self):
+
         messege_df = self.good_days.loc[:, ['localTimestamp', 'swell']]
         messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
         messege_df.reset_index(drop=True, inplace=True)
 
+        bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
+        bot_chatID = '787115422'
+        send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={bot_chatID}&parse_mode=Markdown&text={messege_df}'
 
-        if not self.good_days.empty:
-            message = client.messages.create(
-                from_='whatsapp:+14155238886',
-                body=f"upcoming waves:\n {messege_df}",
-                to=f'whatsapp:+972544641630'
-            )
+        response = requests.get(send_text)
 
+        return response.json()
 
 
 if __name__ == '__main__':
@@ -189,7 +185,8 @@ if __name__ == '__main__':
     a = Msw(repeat_bool=True)
     a.repeat()
     # a.update()
-
-
+    # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
+    # chat_id = '1393856489'
+    # a.telegram_bot_sendtext()
 
 
