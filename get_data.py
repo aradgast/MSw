@@ -55,8 +55,9 @@ class Msw:
         self.df_marina = self.to_dataframe(requests.api.get(self.url_marina))
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
-        # self.email()
-        self.telegram_bot_sendtext()
+        if not self.good_days.empty:
+            # self.email()
+            self.telegram_bot_sendtext()
 
     def repeat(self):
         '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
@@ -188,8 +189,8 @@ class Msw:
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
-    a.repeat()
-    # a.update()
+    # a.repeat()
+    a.update()
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # a.telegram_bot_sendtext()
