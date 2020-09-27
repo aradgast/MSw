@@ -173,7 +173,10 @@ class Msw:
 
         bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
         # bot_chatID = ['787115422', '989958958']
-        bot_chatID = {'arad': ['787115422', 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'], 'omer': ['989958958', 'https://magicseaweed.com/Ashdod-Surf-Report/4219/']}
+        bot_chatID = {'arad': ['787115422', 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'], 'omer': \
+                        ['989958958', 'https://magicseaweed.com/Ashdod-Surf-Report/4219/ \n '
+                                      'https://www.fcs.co.il/%D7%9E%D7%A6%D7%9C%D7%9E%D7%AA-%D7%97%D7%95%D7%A3-%D7%94'
+                                      '%D7%A9%D7%95%D7%91%D7%A8-%D7%91%D7%90%D7%A9%D7%93%D7%95%D7%93/']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=hi {key} \n {messege_df} \n {value[1]} '
