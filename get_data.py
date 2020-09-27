@@ -1,4 +1,4 @@
-import numpy as np
+# import numpy as np
 import json
 # import pandas_datareader as web
 import requests
@@ -15,7 +15,7 @@ import time
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import csv
+# import csv
 import pytz
 #import Google_docs
 #from Google_docs import manage_Users_dict, fetch_data
@@ -189,8 +189,8 @@ class Msw:
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
-    # a.repeat()
-    a.update()
+    a.repeat()
+    # a.update()
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # a.telegram_bot_sendtext()
