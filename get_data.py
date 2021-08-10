@@ -20,14 +20,11 @@ import pytz
 #import Google_docs
 #from Google_docs import manage_Users_dict, fetch_data
 
-
+# for expend the info sown in the tables
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
-
-# TODO need to check who to run in time period on a server
-#  and how to send text if relevant
 
 class Msw:
     def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.5,
@@ -51,7 +48,7 @@ class Msw:
 
 
     def update(self):
-        ''' this func will take new data from the api, and opreate the relavent funcs to init the alg'''
+        ''' this func will take new data from the api, and opreate the relavent funcs to init the algo'''
         self.df_marina = self.to_dataframe(requests.api.get(self.url_marina))
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
@@ -63,7 +60,7 @@ class Msw:
         '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
         while self.repeat_bool:
             self.update()
-            time.sleep(60*60*10)
+            time.sleep(60*60*10) #10 hours pause
 
     def to_dataframe(self, url):
         return pd.DataFrame((pd.read_json(url.text)))
@@ -77,15 +74,13 @@ class Msw:
         marina_data = self.df_marina
         tel_baroch_data = self.df_tel_baroch
         for i in range(sampler_num):
-            marina_swell_height = marina_data['swell'].iloc[i]['absMinBreakingHeight']  # [
-            # 'components']['combined'][ 'height']
-            marina_swell_period = marina_data['swell'].iloc[i]['components']['combined'][
-                'period']
-            tel_swell_height = tel_baroch_data['swell'].iloc[i]['absMinBreakingHeight']  # [
-            # 'components']['combined']['height']
-            tel_swell_period = tel_baroch_data['swell'].iloc[i]['components']['combined'][
-                'period']
-            avg_height = (marina_swell_height + tel_swell_height) / 2
+            marina_swell_height_min = marina_data['swell'].iloc[i]['absMinBreakingHeight']
+            marina_swell_height_max = marina_data['swell'].iloc[i]['absMaxBreakingHeight']
+            marina_swell_period = marina_data['swell'].iloc[i]['components']['combined']['period']
+            tel_swell_height_min = tel_baroch_data['swell'].iloc[i]['absMinBreakingHeight']
+            tel_swell_height_max = tel_baroch_data['swell'].iloc[i]['absMaxBreakingHeight']
+            tel_swell_period = tel_baroch_data['swell'].iloc[i]['components']['combined']['period']
+            avg_height = (marina_swell_height_min+marina_swell_height_max+tel_swell_height_min+tel_swell_height_max)/4
             avg_period = (marina_swell_period + tel_swell_period) / 2
             if (avg_height >= self.swell_high and avg_period >= self.swell_period) or avg_period > 8:
                 date = datetime.fromtimestamp(self.df_marina['localTimestamp'].iloc[i])
@@ -120,22 +115,22 @@ class Msw:
     #     TODO - off_shor - height
 
     def get_days(self):
-        '''this method just organize the data to get a clear output'''
+        """this method just organize the data to get a clear output"""
         good_days = self.df_tel_baroch.iloc[self.check_wind()]
         for i in range(len(good_days)):
-            good_days['localTimestamp'].iloc[i] = datetime.fromtimestamp(good_days['localTimestamp'].iloc[i]).strftime("%D %H:%M")
-            # good_days['charts'].iloc[i] = good_days['charts'].iloc[i]['swell']
+            good_days['localTimestamp'].iloc[i] = datetime.fromtimestamp(good_days['localTimestamp'].iloc[i])\
+                .strftime("%D %H:%M")
+
             good_days['condition'].iloc[i] = f", temp : {good_days['condition'].iloc[i]['temperature']} C "
             good_days['swell'].iloc[
-                i] = f", height : {round(good_days['swell'].iloc[i]['components']['combined']['height'],2)} m , period : {good_days['swell'].iloc[i]['components']['combined']['period']} sec "
-        # good_days = good_days.loc[:, ['localTimestamp', 'swell', 'condition', 'charts']]
+                i] = f", height : {round(good_days['swell'].iloc[i]['components']['combined']['height'],2)} m , period :" \
+                     f" {good_days['swell'].iloc[i]['components']['combined']['period']} sec "
         good_days = good_days.loc[:, ['localTimestamp', 'swell', 'condition']]
-        # pd.DataFrame.to_csv(good_days, f"{datetime.now().date()} ({datetime.now().hour})", header=False,
-        #                     index=False)  # todo
+
         self.good_days = good_days
 
     # TODO - add temp from condition and img
-    # TODO - maybe image proccesing for better forcast
+
     def email(self):
         '''will send mail to the users in the csv file if relevent'''
         file_path = 'Google_docs\myfile.json'
@@ -173,26 +168,25 @@ class Msw:
         messege_df.reset_index(drop=True, inplace=True)
 
         bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
-        # bot_chatID = ['787115422', '989958958']
-        bot_chatID = {'arad': ['787115422', 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'], 'omer': \
+        bot_chatID = {'Arad': ['787115422', 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'], 'Omer': \
                         ['989958958', 'https://magicseaweed.com/Ashdod-Surf-Report/4219/ \n '
                                       'https://www.fcs.co.il/%D7%9E%D7%A6%D7%9C%D7%9E%D7%AA-%D7%97%D7%95%D7%A3-%D7%94'
-                                      '%D7%A9%D7%95%D7%91%D7%A8-%D7%91%D7%90%D7%A9%D7%93%D7%95%D7%93/']}
+                                      '%D7%A9%D7%95%D7%91%D7%A8-%D7%91%D7%90%D7%A9%D7%93%D7%95%D7%93/'], 'Pita': \
+                      ['', 'https://magicseaweed.com/Hilton-Surf-Report/3658/' 'https://beachcam.co.il/yamit.html']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=hi {key} \n {messege_df} \n {value[1]} '
+                        f'&text=Hi {key} \nGO SURF! \n {messege_df} \n {value[1]} '
             response = requests.get(send_text)
 
-        # return response.json()
 
 
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
-    a.repeat()
-    # a.update()
+    # a.repeat()
+    a.update()
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
-    # a.telegram_bot_sendtext()
+
 
 
