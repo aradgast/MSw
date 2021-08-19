@@ -123,7 +123,7 @@ class Msw:
                                                    .strftime("%D %H:%M"),\
                                                    datetime.fromtimestamp(good_days['localTimestamp'].iloc[i]).strftime(
                                                        '%A')
-            good_days['condition'].iloc[i] = f", temp : {good_days['condition'].iloc[i]['temperature']} C "
+            good_days['condition'].iloc[i] = f",temp : {good_days['condition'].iloc[i]['temperature']} C"
             good_days['swell'].iloc[i] = f"height : {round(good_days['swell'].iloc[i]['components']['combined']['height'], 2)}" \
                                          f" m , period :{good_days['swell'].iloc[i]['components']['combined']['period']} sec"
         good_days = good_days.loc[:, ['localTimestamp', 'swell', 'condition']]
@@ -181,7 +181,7 @@ class Msw:
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
             response = requests.get(send_text)
-        #     print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
+            # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
 
 if __name__ == '__main__':
     print('***************************')
