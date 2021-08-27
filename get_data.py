@@ -28,8 +28,8 @@ pd.set_option('display.width', 1000)
 
 
 class Msw:
-    def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.2,
-                 swell_period=2, sunrise=6,
+    def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.6,
+                 swell_period=7, sunrise=6,
                  sunset=18):
 
         self.url_marina = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3979&units=eu'
@@ -171,12 +171,12 @@ class Msw:
 
         bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n' 
-                               'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html']}#,
-            # 'Omer': ['989958958','Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-            #             'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
-            # 'Pita':['1902388307','Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
-            #         'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
-            # 'Ofek':['1204562422','Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/']}
+                               'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
+            'Omer': ['989958958','Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
+            'Pita':['1902388307','Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
+                    'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
+            'Ofek':['1204562422','Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
