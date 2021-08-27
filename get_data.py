@@ -1,5 +1,5 @@
 # import numpy as np
-import json
+# import json
 # import pandas_datareader as web
 import requests
 import pandas as pd
@@ -10,11 +10,11 @@ from datetime import datetime
 # from scipy import misc
 # from PIL import Image
 # from io import BytesIO
-import time
+# import time
 # import threading
-import smtplib, ssl
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+# import smtplib, ssl
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText
 # import csv
 import pytz
 
@@ -28,8 +28,8 @@ pd.set_option('display.width', 1000)
 
 
 class Msw:
-    def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.6,
-                 swell_period=7, sunrise=6,
+    def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.2,
+                 swell_period=2, sunrise=6,
                  sunset=18):
 
         self.url_marina = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3979&units=eu'
@@ -178,16 +178,16 @@ class Msw:
                     'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
             'Ofek':['1204562422','Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/']}
         for key, value in bot_chatID.items():
-            send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
-            response = requests.get(send_text)
-            # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
+            # send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
+            #             f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
+            # response = requests.get(send_text)
+            print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
 
 if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
-    a.repeat()
-    # a.update()
+    # a.repeat()
+    a.update()
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # print(datetime.today().strftime('%A'))

@@ -1,10 +1,4 @@
-json
 requests
 pandas
 datetime
-time
-smtplib
-ssl
-email.mime.multipart
-email.mime.text
 pytz
