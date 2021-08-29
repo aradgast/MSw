@@ -81,7 +81,8 @@ class Msw:
             tel_swell_height_max = tel_baroch_data['swell'].iloc[i]['absMaxBreakingHeight']
             tel_swell_period = tel_baroch_data['swell'].iloc[i]['components']['combined']['period']
             avg_height = (
-                                     marina_swell_height_min + marina_swell_height_max + tel_swell_height_min + tel_swell_height_max) / 4
+                                 marina_swell_height_min + marina_swell_height_max + tel_swell_height_min
+                                 + tel_swell_height_max) / 4
             avg_period = (marina_swell_period + tel_swell_period) / 2
             if (avg_height >= self.swell_high and avg_period >= self.swell_period) or avg_period > 8:
                 date = datetime.fromtimestamp(self.df_marina['localTimestamp'].iloc[i])
@@ -120,12 +121,13 @@ class Msw:
         good_days = self.df_tel_baroch.iloc[self.check_wind()]
         for i in range(len(good_days)):
             good_days['localTimestamp'].iloc[i] = datetime.fromtimestamp(good_days['localTimestamp'].iloc[i]) \
-                                                   .strftime("%D %H:%M"),\
-                                                   datetime.fromtimestamp(good_days['localTimestamp'].iloc[i]).strftime(
-                                                       '%A')
+                                                      .strftime("%D %H:%M"), \
+                                                  datetime.fromtimestamp(good_days['localTimestamp'].iloc[i]).strftime(
+                                                      '%A')
             good_days['condition'].iloc[i] = f",temp : {good_days['condition'].iloc[i]['temperature']} C"
-            good_days['swell'].iloc[i] = f"height : {round(good_days['swell'].iloc[i]['components']['combined']['height'], 2)}" \
-                                         f" m , period :{good_days['swell'].iloc[i]['components']['combined']['period']} sec"
+            good_days['swell'].iloc[
+                i] = f"height : {round(good_days['swell'].iloc[i]['components']['combined']['height'], 2)}" \
+                     f" m , period :{good_days['swell'].iloc[i]['components']['combined']['period']} sec"
         good_days = good_days.loc[:, ['localTimestamp', 'swell', 'condition']]
 
         self.good_days = good_days
@@ -168,20 +170,22 @@ class Msw:
         messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
         messege_df = messege_df.rename_axis(None)
 
-
         bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
-        bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n' 
-                               'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
-            'Omer': ['989958958','Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
-            'Pita':['1902388307','Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
-                    'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
-            'Ofek':['1204562422','Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/']}
+        bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
+                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
+                      'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                                            'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
+                      'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
+                                             'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
+                      'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
+                      'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                                             'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
             response = requests.get(send_text)
             # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
+
 
 if __name__ == '__main__':
     print('***************************')
