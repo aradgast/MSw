@@ -170,7 +170,7 @@ class Msw:
         messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
         messege_df = messege_df.rename_axis(None)
 
-        bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
+        bot_token = '1393856489:AAGYxtFgalnk1dg6VQ9iSi2VYpMW1Gzf1Yk'
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
                                             'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
                       'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
@@ -195,3 +195,4 @@ if __name__ == '__main__':
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # print(datetime.today().strftime('%A'))
+    print('!!')
