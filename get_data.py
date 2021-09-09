@@ -172,17 +172,17 @@ class Msw:
 
         bot_token = '1393856489:AAGYxtFgalnk1dg6VQ9iSi2VYpMW1Gzf1Yk'
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
-                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
-                      'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-                                            'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
-                      'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
-                                             'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
-                      'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
-                      'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-                                             'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
+                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html']}
+                      # 'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                      #                       'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
+                      # 'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
+                      #                        'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
+                      # 'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
+                      # 'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                      #                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} '
+                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} test '
             response = requests.get(send_text)
             # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
 
@@ -195,4 +195,3 @@ if __name__ == '__main__':
     # telegram_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
     # chat_id = '1393856489'
     # print(datetime.today().strftime('%A'))
-    print('!!')
