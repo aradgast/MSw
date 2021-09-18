@@ -192,5 +192,5 @@ if __name__ == '__main__':
     print('***************************')
     a = Msw(repeat_bool=True)
     # a.repeat()
-    # a.update()
+    a.update()
 
