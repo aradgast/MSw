@@ -182,7 +182,8 @@ class Msw:
                       #                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]}, test time :{datetime.now(self.local_israel_tz).time} '
+                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]}, test time '\
+                        f'{datetime.now(self.local_israel_tz).strftime("%H:%M")} '
             response = requests.get(send_text)
             #for testing before deploy
             # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
@@ -193,4 +194,4 @@ if __name__ == '__main__':
     a = Msw(repeat_bool=True)
     # a.repeat()
     a.update()
-
+    print('done!')
