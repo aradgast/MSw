@@ -1,12 +1,12 @@
+# import Google_docs
+# from Google_docs import manage_Users_dict, fetch_data
 # import numpy as np
 # import json
 # import pandas_datareader as web
-import requests
-import pandas as pd
 # import matplotlib.image as img
 # import matplotlib.pyplot as plt
 # from urllib.request import urlretrieve
-from datetime import datetime
+# for expend the info sown in the tables
 # from scipy import misc
 # from PIL import Image
 # from io import BytesIO
@@ -16,12 +16,13 @@ from datetime import datetime
 # from email.mime.multipart import MIMEMultipart
 # from email.mime.text import MIMEText
 # import csv
+
+import requests
+import pandas as pd
+from datetime import datetime
 import pytz
 
-# import Google_docs
-# from Google_docs import manage_Users_dict, fetch_data
-
-# for expend the info sown in the tables
+# for debugging
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
@@ -46,6 +47,7 @@ class Msw:
         self.good_days = pd.DataFrame()
         self.repeat_bool = repeat_bool
         self.local_israel_tz = pytz.timezone('Israel')
+        self.on_shore_flag = False
 
     def update(self):
         ''' this func will take new data from the api, and opreate the relavent funcs to init the algo'''
@@ -105,16 +107,13 @@ class Msw:
         relavent_days_tel = self.df_marina.iloc[mask]
         no_wind_days = []
         for i in range(len(mask)):
-            if relavent_days_tel.iloc[i][6]['speed'] + relavent_days_marina.iloc[i][6]['speed'] < 40:
+            if 45 < relavent_days_tel.iloc[i][6]['direction'] < 135 and 45 < relavent_days_marina.iloc[i][6]['direction']\
+                    < 135:
                 no_wind_days.append(mask[i])
-            elif 45 < relavent_days_tel.iloc[i][6]['direction'] < 135 and 45 < relavent_days_marina.iloc[i][6][
-                'direction'] < 135:
+                self.on_shore_flag = True
+            elif relavent_days_tel.iloc[i][6]['speed'] + relavent_days_marina.iloc[i][6]['speed'] < 40:
                 no_wind_days.append(mask[i])
         return no_wind_days
-
-    #     TODO - on_shor - if period>=9 so top 25 kp/h if period <9 so wind 20 kp/h
-    #     TODO - cross_shor - same as on_shor, check the better dirct
-    #     TODO - off_shor - height
 
     def get_days(self):
         """this method just organize the data to get a clear output"""
@@ -132,43 +131,15 @@ class Msw:
 
         self.good_days = good_days
 
-    # TODO - add temp from condition and img
-
-    def email(self):
-        '''will send mail to the users in the csv file if relevent'''
-        file_path = 'Google_docs\myfile.json'
-        df_email = self.good_days.rename(columns={'localTimestamp': '', 'swell': '', 'condition': ''})
-        df_email.reset_index(drop=True, inplace=True)
-        if not self.good_days.empty:
-            dict = json.load(open(file_path))
-            for name in dict:
-                subject = "Waves are here!!!"
-                body = f'Hi {name}, \nyou should check it out: \n {df_email} \n\n\n this messege sent to ' \
-                       f'you by python script, if you want to unsubscribe send mail to aradon1@gmail.com '
-                sender_email = "aradon1@gmail.com"
-                receiver_email = dict[name]
-                password = input("gmail password: ")
-
-                message = MIMEMultipart()
-                message["From"] = "Wave's Alert"
-                message["To"] = receiver_email
-                message["Subject"] = subject
-                message["Body"] = body
-                message.attach(MIMEText(body, "plain"))
-                text = message.as_string()
-
-                port = 465
-                context = ssl.create_default_context()
-                with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-                    server.login(sender_email, password)
-                    server.sendmail(sender_email, receiver_email, text)
-
     def telegram_bot_sendtext(self):
 
         messege_df = self.good_days.loc[:, ['localTimestamp', 'swell']]
         messege_df.set_index('localTimestamp', inplace=True)
         messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
         messege_df = messege_df.rename_axis(None)
+        on_shore = ""
+        if self.on_shore_flag:
+            on_shore = "it's on shore, mate!"
 
         bot_token = '1393856489:AAGYxtFgalnk1dg6VQ9iSi2VYpMW1Gzf1Yk'
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
@@ -183,11 +154,11 @@ class Msw:
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]}'
-                        #f'test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
+            #             f'test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
             response = requests.get(send_text)
 
-            #for testing before deploy
-            # print(f'Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]} ')
+            # for testing before deploy
+            # print(f'Hi {key}, \nGO SURF! {on_shore} \n{messege_df} \n\n{value[1]} ')
 
 
 if __name__ == '__main__':
@@ -195,4 +166,4 @@ if __name__ == '__main__':
     a = Msw(repeat_bool=True)
     # a.repeat()
     a.update()
-    # print('done!')
+    print('done!')
