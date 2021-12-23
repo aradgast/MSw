@@ -10,7 +10,7 @@
 # from scipy import misc
 # from PIL import Image
 # from io import BytesIO
-# import time
+import time
 # import threading
 # import smtplib, ssl
 # from email.mime.multipart import MIMEMultipart
@@ -55,7 +55,6 @@ class Msw:
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
         if not self.good_days.empty:
-            # self.email()
             self.telegram_bot_sendtext()
 
     def repeat(self):
@@ -67,7 +66,8 @@ class Msw:
     def to_dataframe(self, url):
         return pd.DataFrame((pd.read_json(url.text)))
 
-    def swell_height_and_period(self):  # TODO need to change to avg. min/max breaking height
+    def swell_height_and_period(self):
+        # TODO need to change to avg. min/max breaking height
         # TODO check the good dirct for tel_barch and mraina swell
         sampler_num = self.df_marina.shape[0]
         days_list = []
@@ -143,17 +143,17 @@ class Msw:
 
         bot_token = '1393856489:AAGYxtFgalnk1dg6VQ9iSi2VYpMW1Gzf1Yk'
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
-                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
-                      'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-                                            'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
-                      'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
-                                             'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
-                      'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
-                      'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
-                                             'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
+                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html']}
+                      # 'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                      #                       'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
+                      # 'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
+                      #                        'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
+                      # 'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
+                      # 'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                      #                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
         for key, value in bot_chatID.items():
             send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=Hi {key}, \nGO SURF! \n{messege_df} \n\n{value[1]}'
+                        f'&text=Hi {key}, \nGO SURF! \n{on_shore}\n{messege_df} \n\n{value[1]}'
             #             f'test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
             response = requests.get(send_text)
 
