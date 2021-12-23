@@ -16,7 +16,7 @@ import time
 # from email.mime.multipart import MIMEMultipart
 # from email.mime.text import MIMEText
 # import csv
-
+import keys
 import requests
 import pandas as pd
 from datetime import datetime
@@ -33,8 +33,8 @@ class Msw:
                  swell_period=7, sunrise=6,
                  sunset=18):
 
-        self.url_marina = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3979&units=eu'
-        self.url_tel_baroch = 'http://magicseaweed.com/api/d592918603bb8f15e84fcb8ba1a91b01/forecast/?spot_id=3978&units=eu'
+        self.url_marina = f'http://magicseaweed.com/api/{keys.msw_key}/forecast/?spot_id=3979&units=eu'
+        self.url_tel_baroch = f'http://magicseaweed.com/api/{keys.msw_key}/forecast/?spot_id=3978&units=eu'
         self.df_marina = None
         self.df_tel_baroch = None
         self.wind_speed = wind_speed
@@ -141,7 +141,7 @@ class Msw:
         if self.on_shore_flag:
             on_shore = "it's on shore, mate!"
 
-        bot_token = '1393856489:AAGYxtFgalnk1dg6VQ9iSi2VYpMW1Gzf1Yk'
+
         bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
                                             'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html']}
                       # 'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
@@ -152,7 +152,7 @@ class Msw:
                       # 'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
                       #                        'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
         for key, value in bot_chatID.items():
-            send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
+            send_text = f'https://api.telegram.org/bot{keys.bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
                         f'&text=Hi {key}, \nGO SURF! \n{on_shore}\n{messege_df} \n\n{value[1]}'
             #             f'test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
             response = requests.get(send_text)
