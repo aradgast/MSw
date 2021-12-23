@@ -1,22 +1,11 @@
-import requests
-import pandas as pd
-#if i will want to extend the users
-bot_token = '1393856489:AAFdXkyWqrivY8PVKF9AC8modSJMY0G_IQo'
-get_update = f'https://api.telegram.org/bot{bot_token}/getUpdates'
-
-response = requests.get(get_update)
-update = pd.DataFrame((pd.read_json(response.text)))
-# print(len(update))
-# update = update['result'][0]
-# update = update['message']
-# update = update['text']
-# print(update['from']['id'])
-
-import dict_contact
-contacts = {}
-for i in range(len(update)):
-    if update['result'][i]['message']['text'] == '/sign_in':
-        contacts[update['result'][i]['message']['from']['first_name']] = update['result'][i]['message']['from']['id']
-print(contacts)
+bot_chatID = {'Arad': ['787115422', 'Full Report \nhttps://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/ \n\n'
+                                            'Dromi surf cam \nhttps://beachcam.co.il/dromi2.html'],
+                      'Omer': ['989958958', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                                            'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY'],
+                      'Pita': ['1902388307', 'Full Report \nhttps://magicseaweed.com/Hilton-Surf-Report/3658/ \n\n'
+                                             'Hilton surf cam \nhttps://beachcam.co.il/yamit.html'],
+                      'Ofek': ['1204562422', 'Full Report \nhttps://magicseaweed.com/Backdoor-Haifa-Surf-Report/3987/'],
+                      'Ofir': ['1203264499', 'Full Report \nhttps://magicseaweed.com/Ashdod-Surf-Report/4219/ \n\n'
+                                             'Gil surf cam \nhttps://www.youtube.com/watch?v=iRfU0NCVJnY']}
 
 
