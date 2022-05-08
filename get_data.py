@@ -10,7 +10,6 @@
 # from scipy import misc
 # from PIL import Image
 # from io import BytesIO
-import time
 # import threading
 # import smtplib, ssl
 # from email.mime.multipart import MIMEMultipart
@@ -22,15 +21,16 @@ import requests
 import pandas as pd
 from datetime import datetime
 import pytz
+import time
 
 # for debugging
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.width', 1000)
+# pd.set_option('display.max_rows', 500)
+# pd.set_option('display.max_columns', 500)
+# pd.set_option('display.width', 1000)
 
 
 class Msw:
-    def __init__(self, repeat_bool=False, wind_speed=None, wind_dirct=None, swell_dirct=None, swell_high=0.6,
+    def __init__(self, repeat_bool=False, wind_speed=None, wind_direct=None, swell_direct=None, swell_high=0.6,
                  swell_period=7, sunrise=6,
                  sunset=18):
 
@@ -39,10 +39,10 @@ class Msw:
         self.df_marina = None
         self.df_tel_baroch = None
         self.wind_speed = wind_speed
-        self.wind_direct = wind_dirct
+        self.wind_direct = wind_direct
         self.swell_high = swell_high
         self.swell_period = swell_period
-        self.swell_direct = swell_dirct
+        self.swell_direct = swell_direct
         self.sunrise = sunrise
         self.sunset = sunset
         self.good_days = pd.DataFrame()
@@ -51,7 +51,7 @@ class Msw:
         self.on_shore_flag = False
 
     def update(self):
-        ''' this func will take new data from the api, and opreate the relavent funcs to init the algo'''
+        """ this func will take a new data from the api, and operate the relevant funcs to init the algo"""
         self.df_marina = self.to_dataframe(requests.api.get(self.url_marina))
         self.df_tel_baroch = self.to_dataframe(requests.api.get(self.url_tel_baroch))
         self.get_days()
@@ -59,7 +59,8 @@ class Msw:
             self.telegram_bot_sendtext()
 
     def repeat(self):
-        '''when init the repeat_bool field as True, calling this func will opreate the update func in interval time periods'''
+        """when init the repeat_bool field as True, calling this func will operate the update func in interval time 
+        periods """
         while self.repeat_bool:
             self.update()
             time.sleep(60 * 60 * 10)  # 10 hours pause
@@ -68,8 +69,8 @@ class Msw:
         return pd.DataFrame((pd.read_json(url.text)))
 
     def swell_height_and_period(self):
-        # TODO need to change to avg. min/max breaking height
-        # TODO check the good dirct for tel_barch and mraina swell
+        # need to change to avg. min/max breaking height
+        # check the good direct for tel_barch and marina swell
         sampler_num = self.df_marina.shape[0]
         days_list = []
         index_list = []
@@ -103,16 +104,16 @@ class Msw:
         # return (np.array(days_list).reshape((good_days,1)))
 
     def check_wind(self):
-        mask = self.swell_height_and_period()  # calling the func to get the relvent days
-        relavent_days_marina = self.df_marina.iloc[mask]
-        relavent_days_tel = self.df_marina.iloc[mask]
+        mask = self.swell_height_and_period()  # calling the func to get the relevant days
+        relevant_days_marina = self.df_marina.iloc[mask]
+        relevant_days_tel = self.df_marina.iloc[mask]
         no_wind_days = []
         for i in range(len(mask)):
-            if 45 < relavent_days_tel.iloc[i][6]['direction'] < 135 and 45 < relavent_days_marina.iloc[i][6]['direction']\
-                    < 135:
+            if 45 < relevant_days_tel.iloc[i][6]['direction'] < 135 and 45 < \
+                    relevant_days_marina.iloc[i][6]['direction'] < 135:
                 no_wind_days.append(mask[i])
                 self.on_shore_flag = True
-            elif relavent_days_tel.iloc[i][6]['speed'] + relavent_days_marina.iloc[i][6]['speed'] < 40:
+            elif relevant_days_tel.iloc[i][6]['speed'] + relevant_days_marina.iloc[i][6]['speed'] < 40:
                 no_wind_days.append(mask[i])
         return no_wind_days
 
@@ -134,27 +135,28 @@ class Msw:
 
     def telegram_bot_sendtext(self):
 
-        messege_df = self.good_days.loc[:, ['localTimestamp', 'swell']]
-        messege_df.set_index('localTimestamp', inplace=True)
-        messege_df = messege_df.rename(columns={'localTimestamp': '', 'swell': ''})
-        messege_df = messege_df.rename_axis(None)
+        message_df = self.good_days.loc[:, ['localTimestamp', 'swell']]
+        message_df.set_index('localTimestamp', inplace=True)
+        message_df = message_df.rename(columns={'localTimestamp': '', 'swell': ''})
+        message_df = message_df.rename_axis(None)
         on_shore = ""
         if self.on_shore_flag:
             on_shore = "it's on shore, mate!"
 
         for key, value in users.bot_chatID.items():
-            send_text = f'https://api.telegram.org/bot{keys.bot_token}/sendMessage?chat_id={value[0]}&parse_mode=Markdown' \
-                        f'&text=Hi {key}, \nGO SURF! \n{on_shore}\n{messege_df} \n\n{value[1]}'
-            #             f'test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
+            send_text = f'https://api.telegram.org/bot{keys.bot_token}/sendMessage?chat_id= {value[0]}&parse_mode' \
+                       f'=Markdown&text=Hi {key}, \nGO SURF! \n{on_shore}\n{message_df} \n\n{value[1]}'
+            #             f' test time {datetime.now(self.local_israel_tz).strftime("%H:%M")} '
             response = requests.get(send_text)
+            # requests.get(send_text)
 
             # for testing before deploy
-            # print(f'Hi {key}, \nGO SURF! {on_shore} \n{messege_df} \n\n{value[1]} ')
+            # print(f'Hi {key}, \nGO SURF! {on_shore} \n{message_df} \n\n{value[1]} ')
 
 
 if __name__ == '__main__':
     print('***************************')
-    a = Msw(repeat_bool=True)
-    # a.repeat()
+    a = Msw(repeat_bool=True, swell_high=0.2, swell_period=3)
     a.update()
+    print(a.good_days)
     print('done!')
